@@ -45,10 +45,8 @@ class Board:
         # king castling
         if isinstance(piece, King):
             if self.castling(initial, final) and not testing:
-                print("Inside board castling...")
                 diff = final.col - initial.col
                 rook = piece.left_rook if (diff < 0) else piece.right_rook
-                print(type(rook))
                 self.move(rook, rook.moves[-1])
 
         # move
@@ -351,7 +349,6 @@ class Board:
                 left_rook = self.squares[row][0].piece
                 if isinstance(left_rook, Rook):
                     if not left_rook.moved:
-                        print("QRooks init...")
                         for c in range(1, 4):
                             # castling is not possible because there are pieces in between ?
                             if self.squares[row][c].has_piece():
@@ -390,7 +387,6 @@ class Board:
                 right_rook = self.squares[row][7].piece
                 if isinstance(right_rook, Rook):
                     if not right_rook.moved:
-                        print("KRooks init...")
                         for c in range(5, 7):
                             # castling is not possible because there are pieces in between ?
                             if self.squares[row][c].has_piece():

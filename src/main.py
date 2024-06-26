@@ -10,7 +10,7 @@ from AI import AI
 
 class Main:
 
-    def __init__(self):
+    def __init__(self, AI_state):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Chess")
@@ -18,7 +18,7 @@ class Main:
             pygame.image.load(os.path.join("..", "assets", "chess.png"))
         )
         self.game = Game()
-        self.AI = AI()
+        self.AI = AI(AI_state)
 
     def mainloop(self):
 
@@ -27,8 +27,9 @@ class Main:
         board = self.game.board
         dragger = self.game.dragger
         AI = self.AI
+        running = True
 
-        while True:
+        while running:
             # show methods
             game.show_bg(screen)
             game.show_last_move(screen)
@@ -118,8 +119,6 @@ class Main:
                                 released_col,
                             )
 
-                            print(game.next_player, "Player", move, dragger.piece.name)
-
                             # sounds
                             game.play_sound(captured)
 
@@ -184,6 +183,11 @@ class Main:
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
+                    
+                    # return to main menu
+                    if event.key == pygame.K_q:
+                        running = False
+                        
 
                 # quit application
                 elif event.type == pygame.QUIT:
@@ -193,6 +197,9 @@ class Main:
 
             pygame.display.update()
 
+        
+        AI.engine.quit()
 
-main = Main()
-main.mainloop()
+if __name__ == "__main__":
+    main = Main()
+    main.mainloop()

@@ -6,10 +6,10 @@ from const import *
 
 class AI:
 
-    def __init__(self):
+    def __init__(self, AI_state):
         self.board = chess.Board()
         self.engine = chess.engine.SimpleEngine.popen_uci("stockfish.exe")
-        self.is_active = 1
+        self.is_active = AI_state
 
     def play_move(self, initial_row, initial_col, released_row, released_col):
         # get the initial and released squares of the best move
