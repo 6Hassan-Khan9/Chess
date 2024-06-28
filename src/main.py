@@ -10,12 +10,12 @@ from AI import AI
 
 class Main:
 
-    def __init__(self, AI_state):
+    def __init__(self, AI_state, selected_side):
         pygame.init()
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Chess")
+        self.screen = pygame.display.set_mode((WIDTH+300, HEIGHT))
+        pygame.display.set_caption("Electronic Chess")
         pygame.display.set_icon(
-            pygame.image.load(os.path.join("..", "assets", "chess.png"))
+            pygame.image.load(os.path.join("..", "assets", "images", "wolf-menu.png"))
         )
         self.game = Game()
         self.AI = AI(AI_state)
@@ -31,6 +31,7 @@ class Main:
 
         while running:
             # show methods
+            screen.fill((0, 0, 0))
             game.show_bg(screen)
             game.show_last_move(screen)
             game.show_moves(screen)
@@ -48,9 +49,13 @@ class Main:
 
                     clicked_row = dragger.mouseY // SQSIZE
                     clicked_col = dragger.mouseX // SQSIZE
+                    valid_pos = clicked_row < 8 and clicked_col < 8 and clicked_row >= 0 and clicked_col >= 0
 
                     # if clicked square has a piece ?
-                    if board.squares[clicked_row][clicked_col].has_piece():
+                    if (
+                        valid_pos and
+                        board.squares[clicked_row][clicked_col].has_piece()
+                    ):
                         piece = board.squares[clicked_row][clicked_col].piece
                         # valid piece (color) ?
                         if piece.color == game.next_player:
@@ -67,18 +72,20 @@ class Main:
                 elif event.type == pygame.MOUSEMOTION:
                     motion_row = event.pos[1] // SQSIZE
                     motion_col = event.pos[0] // SQSIZE
+                    valid_pos = motion_row < 8 and motion_col < 8 and motion_row >= 0 and motion_col >= 0
 
-                    game.set_hover(motion_row, motion_col)
+                    if valid_pos:
+                        game.set_hover(motion_row, motion_col)
 
-                    if dragger.dragging:
-                        dragger.update_mouse(event.pos)
-                        # show methods
-                        game.show_bg(screen)
-                        game.show_last_move(screen)
-                        game.show_moves(screen)
-                        game.show_pieces(screen)
-                        game.show_hover(screen)
-                        dragger.update_blit(screen)
+                        if dragger.dragging:
+                            dragger.update_mouse(event.pos)
+                            # show methods
+                            game.show_bg(screen)
+                            game.show_last_move(screen)
+                            game.show_moves(screen)
+                            game.show_pieces(screen)
+                            game.show_hover(screen)
+                            dragger.update_blit(screen)
 
                 # click release
                 elif event.type == pygame.MOUSEBUTTONUP:
@@ -94,41 +101,43 @@ class Main:
                         initial_col = dragger.initial_col
                         released_row = dragger.mouseY // SQSIZE
                         released_col = dragger.mouseX // SQSIZE
+                        valid_pos = released_row < 8 and released_col < 8 and released_row >= 0 and released_col >= 0
 
-                        # create possible move
-                        initial = Square(initial_row, initial_col)
-                        final = Square(released_row, released_col)
-                        move = Move(initial, final)
+                        if valid_pos:
+                            # create possible move
+                            initial = Square(initial_row, initial_col)
+                            final = Square(released_row, released_col)
+                            move = Move(initial, final)
 
-                        # valid move ?
-                        valid_move = board.valid_move(dragger.piece, move)
-                        if valid_move:
-                            # normal capture
-                            captured = board.squares[released_row][
-                                released_col
-                            ].has_piece()
-                            board.move(dragger.piece, move)
+                            # valid move ?
+                            valid_move = board.valid_move(dragger.piece, move)
+                            if valid_move:
+                                # normal capture
+                                captured = board.squares[released_row][
+                                    released_col
+                                ].has_piece()
+                                board.move(dragger.piece, move)
 
-                            board.set_true_en_passant(dragger.piece)
+                                board.set_true_en_passant(dragger.piece)
 
-                            # update AI board
-                            AI.update_AI_board(
-                                initial_row,
-                                initial_col,
-                                released_row,
-                                released_col,
-                            )
+                                # update AI board
+                                AI.update_AI_board(
+                                    initial_row,
+                                    initial_col,
+                                    released_row,
+                                    released_col,
+                                )
 
-                            # sounds
-                            game.play_sound(captured)
+                                # sounds
+                                game.play_sound(captured)
 
-                            # show methods
-                            game.show_bg(screen)
-                            game.show_last_move(screen)
-                            game.show_pieces(screen)
+                                # show methods
+                                game.show_bg(screen)
+                                game.show_last_move(screen)
+                                game.show_pieces(screen)
 
-                            # next turn
-                            game.next_turn()
+                                # next turn
+                                game.next_turn()
 
                     dragger.undrag_piece()
 
@@ -143,7 +152,7 @@ class Main:
                                 released_col,
                             )
                         )
-                       
+
                         # render AI move
                         initial = Square(initial_row, initial_col)
                         final = Square(released_row, released_col)
@@ -151,7 +160,9 @@ class Main:
 
                         # calculate moves for the piece on initial sqaure
                         best_piece = board.squares[initial_row][initial_col].piece
-                        board.calc_moves(best_piece, initial_row, initial_col, bool=True)
+                        board.calc_moves(
+                            best_piece, initial_row, initial_col, bool=True
+                        )
 
                         # normal capture
                         captured = board.squares[released_row][released_col].has_piece()
@@ -183,11 +194,10 @@ class Main:
                         game = self.game
                         board = self.game.board
                         dragger = self.game.dragger
-                    
+
                     # return to main menu
                     if event.key == pygame.K_q:
                         running = False
-                        
 
                 # quit application
                 elif event.type == pygame.QUIT:
@@ -197,8 +207,8 @@ class Main:
 
             pygame.display.update()
 
-        
         AI.engine.quit()
+
 
 if __name__ == "__main__":
     main = Main()
