@@ -20,10 +20,10 @@ class Menu:
         self.my_theme.title_bar_style = pygame_menu.widgets.MENUBAR_STYLE_UNDERLINE_TITLE
         self.my_theme.title_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
         self.my_theme.widget_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
-        self.my_theme.widget_font_shadow = True
-        self.my_theme.widget_font_shadow_color = (168, 183, 189)
+        self.my_theme.widget_font_shadow = False
+        # self.my_theme.widget_font_shadow_color = (168, 183, 189)
         self.my_theme.widget_font_size = 36
-        self.my_theme.widget_font_shadow_offset = 1
+        # self.my_theme.widget_font_shadow_offset = 1
         self.my_theme.widget_selection_effect = pygame_menu.widgets.SimpleSelection()
 
         self.menu = pygame_menu.Menu("Main Menu", WIDTH, HEIGHT, theme=self.my_theme)
@@ -66,7 +66,7 @@ class Menu:
         os.path.join("..", "assets", "images", "wolf-menu.png"),
         scale=(0.4, 0.4)
         ).translate(5, 25)
-
+        print(l)
         self.menu.mainloop(self.screen)
 
     def start_game(self, *AI):

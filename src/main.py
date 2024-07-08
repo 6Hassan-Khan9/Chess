@@ -10,7 +10,7 @@ from AI import AI
 
 class Main:
 
-    def __init__(self, AI_state, selected_side):
+    def __init__(self, AI_state=True, selected_side=None):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH+300, HEIGHT))
         pygame.display.set_caption("Electronic Chess")
@@ -37,7 +37,8 @@ class Main:
             game.show_moves(screen)
             game.show_pieces(screen)
             game.show_hover(screen)
-
+            game.show_moves_list(screen)
+            
             if dragger.dragging:
                 dragger.update_blit(screen)
 
@@ -121,7 +122,7 @@ class Main:
                                 board.set_true_en_passant(dragger.piece)
 
                                 # update AI board
-                                AI.update_AI_board(
+                                san = AI.update_AI_board(
                                     initial_row,
                                     initial_col,
                                     released_row,
@@ -135,6 +136,7 @@ class Main:
                                 game.show_bg(screen)
                                 game.show_last_move(screen)
                                 game.show_pieces(screen)
+                                game.show_moves_list(screen, san)
 
                                 # next turn
                                 game.next_turn()
@@ -143,8 +145,7 @@ class Main:
 
                     # play next move with AI
                     if AI.is_active and valid_move:
-
-                        initial_row, initial_col, released_row, released_col = (
+                        san, initial_row, initial_col, released_row, released_col = (
                             AI.play_move(
                                 initial_row,
                                 initial_col,
@@ -177,7 +178,8 @@ class Main:
                         game.show_bg(screen)
                         game.show_last_move(screen)
                         game.show_pieces(screen)
-
+                        game.show_moves_list(screen, san)
+                        
                         # next turn
                         game.next_turn()
 
@@ -211,5 +213,5 @@ class Main:
 
 
 if __name__ == "__main__":
-    main = Main()
+    main = Main(True, None)
     main.mainloop()

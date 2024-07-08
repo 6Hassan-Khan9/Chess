@@ -24,6 +24,19 @@ class Selection:
         self.dragger = Dragger()
         self.config = Config()
         self.config.change_theme()
+        self.label = pygame_menu.widgets.Label("Choose Your Side")
+        self.label.set_alignment(pygame_menu.locals.ALIGN_CENTER)
+        self.label.set_font(
+            pygame_menu.font.FONT_OPEN_SANS_LIGHT,
+            48,
+            (255, 255, 255),
+            (255, 255, 255),
+            (255, 255, 255),
+            (255, 255, 255),
+            (0, 0, 0),
+            True,
+        )
+        self.label.set_position(50 + (WIDTH // COLS), 5 * (WIDTH // COLS))
 
     def fade_in(self):
         fade = pygame.Surface((WIDTH, HEIGHT))
@@ -83,22 +96,7 @@ class Selection:
         self.hovered_sqr = Square(row, col) if (row, col) in ((3, 3), (3, 4)) else None
 
     def show_label(self, surface):
-
-        label = pygame_menu.widgets.Label("Choose Your Side")
-        label.set_alignment(pygame_menu.locals.ALIGN_CENTER)
-        label.set_font(
-            pygame_menu.font.FONT_OPEN_SANS_LIGHT,
-            48,
-            (255, 255, 255),
-            (255, 255, 255),
-            (255, 255, 255),
-            (255, 255, 255),
-            (0, 0, 0),
-            True,
-        )
-        label.set_position(50 + (WIDTH // COLS), 5 * (WIDTH // COLS))
-
-        label.draw(surface)
+        self.label.draw(surface)
 
     def draw_window(self):
 

@@ -1,4 +1,6 @@
 import pygame
+import pygame_menu
+import pygame_menu.widgets
 from const import *
 from board import Board
 from dragger import Dragger
@@ -14,6 +16,31 @@ class Game:
         self.board = Board()
         self.dragger = Dragger()
         self.config = Config()
+
+        # creating theme
+        self.my_theme = pygame_menu.themes.THEME_DARK.copy()
+        self.my_theme.background_color = (0, 0, 0)
+        self.my_theme.title_background_color = (47, 50, 54)
+        self.my_theme.title_bar_style = pygame_menu.widgets.MENUBAR_STYLE_TITLE_ONLY
+        self.my_theme.title_font = pygame_menu.font.FONT_OPEN_SANS_LIGHT
+        self.my_theme.widget_font_color = (255, 255, 255)
+        self.my_theme.widget_font_background_color = (0, 0, 0)
+        self.my_theme.widget_font_size = 20
+        self.my_theme.widget_alignment = pygame_menu.locals.ALIGN_LEFT
+
+        # creating menu
+        self.menu = pygame_menu.Menu(
+            "Moves List", 250, HEIGHT // 2, position=(95, 10), theme=self.my_theme
+        )
+
+        # id of each label
+        self.curr_idx = 0
+
+        # half or full move
+        self.turn = 0
+
+        # previous move
+        self.prev_move = None
 
     # blit methods
 
@@ -125,6 +152,31 @@ class Game:
             )
             # blit
             pygame.draw.rect(surface, color, rect, width=3)
+
+    def show_moves_list(self, surface, move=None):
+        menu = self.menu
+
+        if move:
+            if self.turn % 2 == 0:
+                menu.add.label(
+                    f"{self.curr_idx+1}. {move}", max_char=0, label_id=str(self.curr_idx)
+                ).set_position(0, -100)
+                self.prev_move = move
+
+                # switch to full move
+                self.turn += 1
+
+            else:
+                label = menu.get_widget(str(self.curr_idx))
+                label.set_title(f"{self.curr_idx+1}. {self.prev_move}\t\t\t\t\t{move}")
+                self.curr_idx += 1
+                self.prev_move = None
+
+                # switch to half move
+                self.turn += 1
+
+        menu.draw(surface)
+        
 
     # other methods
 
