@@ -55,11 +55,8 @@ class AI:
         # update AI board
         self.board.push(move)
 
-<<<<<<< HEAD
-=======
         return san
 
->>>>>>> move-list
     def _get_best_move(self):
         move = self.engine.play(self.board, chess.engine.Limit(time=0.1)).move
 

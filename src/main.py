@@ -213,9 +213,5 @@ class Main:
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    main = Main(True, "black")
-=======
     main = Main(True, None)
->>>>>>> move-list
     main.mainloop()
