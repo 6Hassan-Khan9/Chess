@@ -13,7 +13,8 @@ class AI:
 
     def play_move(self, initial_row, initial_col, released_row, released_col):
         # get the initial and released squares of the best move
-        best_move = self._get_best_move().uci()
+        san, move = self._get_best_move()
+        best_move = move.uci()
         initial = best_move[:2]
         released = best_move[2:]
 
@@ -23,7 +24,7 @@ class AI:
         released_col = chess.FILE_NAMES.index(str(released[Dims.COL.value]))
         released_row = 7 - chess.RANK_NAMES.index(str(released[Dims.ROW.value]))
 
-        return (initial_row, initial_col, released_row, released_col)
+        return (san, initial_row, initial_col, released_row, released_col)
 
     def update_AI_board(self, initial_row, initial_col, final_row, final_col):
         # create move
@@ -48,9 +49,17 @@ class AI:
             ):
                 move = Move.from_uci(castling_moves[move.uci()])
 
+        # get san of best move
+        san = self.board.san(move)
+
         # update AI board
         self.board.push(move)
 
+<<<<<<< HEAD
+=======
+        return san
+
+>>>>>>> move-list
     def _get_best_move(self):
         move = self.engine.play(self.board, chess.engine.Limit(time=0.1)).move
 
@@ -74,10 +83,13 @@ class AI:
             ):
                 move = Move.from_uci(castling_moves[move.uci()])
 
+        # get san of best move
+        san = self.board.san(move)
+
         # update AI board
         self.board.push(move)
 
-        return Move.from_uci(uci)
+        return san, Move.from_uci(uci)
 
     def quit_engine(self):
         self.engine.quit()
