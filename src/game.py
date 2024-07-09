@@ -159,17 +159,18 @@ class Game:
         if move:
             if self.turn % 2 == 0:
                 menu.add.label(
-                    f"{self.curr_idx+1}. {move}", max_char=0, label_id=str(self.curr_idx)
+                    f"{self.curr_idx+1}. {move.ljust(6, ' ')}", max_char=0, label_id=str(self.curr_idx)
                 ).set_position(0, -100)
-                self.prev_move = move
+                self.prev_move = move.ljust(6, ' ')
 
                 # switch to full move
                 self.turn += 1
 
             else:
                 label = menu.get_widget(str(self.curr_idx))
-                label.set_title(f"{self.curr_idx+1}. {self.prev_move}\t\t\t\t\t{move}")
+                label.set_title(f"{self.curr_idx+1}. {self.prev_move}\t{move.ljust(6, ' ')}")
                 self.curr_idx += 1
+                print(len(self.prev_move), len(move.ljust(6)))
                 self.prev_move = None
 
                 # switch to half move

@@ -8,7 +8,7 @@ class AI:
 
     def __init__(self, AI_state):
         self.board = chess.Board()
-        self.engine = chess.engine.SimpleEngine.popen_uci("stockfish.exe")
+        self.engine = chess.engine.SimpleEngine.popen_uci(r"C:\Users\Stockfish\stockfish\stockfish.exe")
         self.is_active = AI_state
 
     def play_move(self, initial_row, initial_col, released_row, released_col):
