@@ -43,7 +43,6 @@ class Main:
                 dragger.update_blit(screen)
 
             for event in pygame.event.get():
-
                 # click
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     dragger.update_mouse(event.pos)
@@ -136,7 +135,7 @@ class Main:
                                 game.show_bg(screen)
                                 game.show_last_move(screen)
                                 game.show_pieces(screen)
-                                game.show_moves_list(screen, san)
+                                game.show_moves_list(screen, san, event)
 
                                 # next turn
                                 game.next_turn()
@@ -178,7 +177,7 @@ class Main:
                         game.show_bg(screen)
                         game.show_last_move(screen)
                         game.show_pieces(screen)
-                        game.show_moves_list(screen, san)
+                        game.show_moves_list(screen, san, event)
                         
                         # next turn
                         game.next_turn()
@@ -197,6 +196,13 @@ class Main:
                         board = self.game.board
                         dragger = self.game.dragger
 
+                    # scroll down move list
+                    if event.key == pygame.K_DOWN:
+                        game.scroll_moves_list(screen, 1)
+                    
+                    if event.key == pygame.K_UP:
+                        game.scroll_moves_list(screen, -1)
+
                     # return to main menu
                     if event.key == pygame.K_q:
                         running = False
@@ -207,11 +213,13 @@ class Main:
                     AI.engine.quit()
                     sys.exit()
 
+              
+            
             pygame.display.update()
 
         AI.engine.quit()
 
 
 if __name__ == "__main__":
-    main = Main(True, None)
+    main = Main(False, None)
     main.mainloop()

@@ -103,10 +103,10 @@ def main(test: bool = False) -> None:
         values_range=(0, world.get_height() - scr_size[1] + thick_h),
         orientation=pygame_menu.locals.ORIENTATION_VERTICAL,
         slider_pad=6,
-        slider_color=(135, 193, 180),
-        slider_hover_color=(180, 180, 180),
+        slider_color=(75, 75, 87),
+        slider_hover_color=(17, 17, 23),
         page_ctrl_thick=thick_v,
-        page_ctrl_color=(253, 246, 220),
+        page_ctrl_color=(31, 31, 36),
         onchange=v_changed
     )
     sb_v.set_shadow(
@@ -150,6 +150,7 @@ def main(test: bool = False) -> None:
         trunc_world = (scr_size[0] - thick_v, scr_size[1] - thick_h)
 
         # noinspection PyTypeChecker
+        print(trunc_world_orig, trunc_world)
         screen.blit(world, (0, 0), (trunc_world_orig, trunc_world))
         pygame.display.update()
 
