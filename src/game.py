@@ -33,9 +33,7 @@ class Game:
 
         # adding control labels
         self.reset_label = pygame_menu.widgets.Label("Press 'r' to reset.").set_font(font=pygame_menu.font.FONT_OPEN_SANS_ITALIC, font_size=15, color=(255, 255, 255), selected_color=(255, 255, 255), readonly_color=(255, 255, 255), readonly_selected_color=(255, 255, 255), background_color=(0, 0, 0)).set_position(5, 0).set_position(WIDTH+10, 400)
-
         self.theme_label = pygame_menu.widgets.Label("Press 't' to change theme.").set_font(font=pygame_menu.font.FONT_OPEN_SANS_ITALIC, font_size=15, color=(255, 255, 255), selected_color=(255, 255, 255), readonly_color=(255, 255, 255), readonly_selected_color=(255, 255, 255), background_color=(0, 0, 0)).set_position(15, 20).set_position(WIDTH+10, 430)
-        
         self.quit_label = pygame_menu.widgets.Label("Press 'q' to escape to menu.").set_font(font=pygame_menu.font.FONT_OPEN_SANS_ITALIC, font_size=15, color=(255, 255, 255), selected_color=(255, 255, 255), readonly_color=(255, 255, 255), readonly_selected_color=(255, 255, 255), background_color=(0, 0, 0)).set_position(15, 20).set_position(WIDTH+10, 460)
         
 
@@ -43,6 +41,9 @@ class Game:
         self.move_list_actual_size = (150, HEIGHT * 100)
         self.move_list_size = (150, 220)
         self.move_list_surface = pygame.Surface(self.move_list_actual_size)
+
+        # creating outline for move list surface
+        self.outline = ((WIDTH+10, 50), self.move_list_size)
 
         # current move
         self.current_move = pygame_menu.widgets.Label("").set_font(font=pygame_menu.font.FONT_OPEN_SANS_LIGHT, font_size=15, color=(255, 255, 255), selected_color=(255, 255, 255), readonly_color=(255, 255, 255), readonly_selected_color=(255, 255, 255), background_color=(0, 0, 0)).set_position(0, 0)
@@ -214,6 +215,7 @@ class Game:
         surface.blit(heading_surface, (WIDTH, 0))
         current_move.draw(move_list_surface)
         surface.blit(move_list_surface, (WIDTH+10, 50), pygame.Rect((0, self.factor), self.move_list_size))
+        pygame.draw.rect(surface, (255, 255, 255), ((WIDTH+5, 45), (150, 240)), 1)
 
     def scroll_moves_list(self, surface, direction=1, move=None, event=None):
         move_list_surface = self.move_list_surface
@@ -233,8 +235,6 @@ class Game:
             self.factor += 20 
         elif (self.factor > min_scroll_size and self.factor < max_scroll_size):
             self.factor += 20 * direction
-
-        # print(max_scroll_size, self.factor)
 
         surface.blit(move_list_surface, (WIDTH+10, 50), pygame.Rect((0, self.factor), self.move_list_size))
 
